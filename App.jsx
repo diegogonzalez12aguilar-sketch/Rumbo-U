@@ -1,17 +1,27 @@
 import { useState } from "react";
-import { units, levelMeta } from "./data";
+import { subjects, levelMeta } from "./data";
 
 export default function App() {
+  const [subjectId, setSubjectId] = useState(null);
   const [unitId, setUnitId] = useState(null);
   const [levelId, setLevelId] = useState(null);
   const [problemIndex, setProblemIndex] = useState(0);
   const [showSolution, setShowSolution] = useState(false);
 
-  const unit = units.find((u) => u.id === unitId);
+  const subject = subjects.find((s) => s.id === subjectId);
+  const unit = subject && subject.units.find((u) => u.id === unitId);
   const problems = unit && levelId ? unit.levels[levelId] : null;
   const problem = problems ? problems[problemIndex] : null;
 
   function goHome() {
+    setSubjectId(null);
+    setUnitId(null);
+    setLevelId(null);
+    setProblemIndex(0);
+    setShowSolution(false);
+  }
+
+  function goSubject() {
     setUnitId(null);
     setLevelId(null);
     setProblemIndex(0);
@@ -22,6 +32,11 @@ export default function App() {
     setLevelId(null);
     setProblemIndex(0);
     setShowSolution(false);
+  }
+
+  function pickSubject(s) {
+    if (!s.ready) return;
+    setSubjectId(s.id);
   }
 
   function pickLevel(id) {
@@ -44,20 +59,53 @@ export default function App() {
     }
   }
 
+  // ---------- PANTALLA DE INICIO ----------
+  if (!subject) {
+    return (
+      <div className="home">
+        <div className="hero">
+          <p className="hero-eyebrow">Estudio para tu examen de admisión</p>
+          <h1 className="hero-title">Rumbo U</h1>
+          <p className="hero-sub">
+            Elige una materia y avanza a tu ritmo, de fácil a difícil, con
+            problemas como los del examen real.
+          </p>
+        </div>
+        <div className="subject-grid">
+          {subjects.map((s) => (
+            <button
+              key={s.id}
+              className={`subject-card${s.ready ? "" : " locked"}`}
+              onClick={() => pickSubject(s)}
+              disabled={!s.ready}
+            >
+              <span className="subject-name">{s.name}</span>
+              <span className="subject-tagline">{s.tagline}</span>
+              <span className="subject-status">
+                {s.ready ? "Empezar →" : "Próximamente"}
+              </span>
+            </button>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="app-shell">
       <div className="brand">
-        <h1>RumboU</h1>
-        <span>estudio para tu examen de admisión</span>
+        <h1>Rumbo U</h1>
+        <span>{subject.name}</span>
       </div>
 
       {!unit && (
         <>
+          <div className="crumb" onClick={goHome}>‹ Inicio</div>
           <p style={{ color: "var(--ink-soft)", fontSize: 14, marginBottom: 14 }}>
-            Matemáticas · elige una unidad
+            {subject.name} · elige una unidad
           </p>
           <div className="unit-list">
-            {units.map((u) => (
+            {subject.units.map((u) => (
               <button
                 key={u.id}
                 className={`unit-card${u.ready ? "" : " disabled"}`}
@@ -67,7 +115,7 @@ export default function App() {
                 <div>
                   <span className="name">{u.name}</span>
                   <span className="status">
-                    {u.ready ? "9 problemas listos" : "Próximamente"}
+                    {u.ready ? "Problemas listos" : "Próximamente"}
                   </span>
                 </div>
                 <span>›</span>
@@ -79,7 +127,7 @@ export default function App() {
 
       {unit && !levelId && (
         <>
-          <div className="crumb" onClick={goHome}>‹ Unidades</div>
+          <div className="crumb" onClick={goSubject}>‹ {subject.name}</div>
           <h2 style={{ fontSize: 19, marginBottom: 4 }}>{unit.name}</h2>
           <p style={{ color: "var(--ink-soft)", fontSize: 14, marginBottom: 14 }}>
             Elige un nivel
