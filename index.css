@@ -12,6 +12,12 @@
   --brick: #9C4230;
   --brick-bg: #F3E1D9;
   --radius: 6px;
+
+  --dusk-navy: #171A2B;
+  --dusk-plum: #4B2A45;
+  --dusk-terracotta: #C4643F;
+  --dusk-gold: #D9A441;
+  --cream: #F4EEE1;
 }
 
 * { box-sizing: border-box; }
@@ -47,6 +53,104 @@ button {
   font-family: inherit;
   cursor: pointer;
 }
+
+/* ---------------- INICIO (hero) ---------------- */
+
+.home {
+  min-height: 100%;
+  background:
+    radial-gradient(ellipse 120% 60% at 50% 0%, rgba(217,164,65,0.18), transparent 60%),
+    linear-gradient(160deg, var(--dusk-navy) 0%, var(--dusk-plum) 55%, var(--dusk-terracotta) 100%);
+  color: var(--cream);
+  padding: 48px 22px 40px;
+}
+
+.hero {
+  text-align: center;
+  max-width: 480px;
+  margin: 0 auto 32px;
+}
+
+.hero-eyebrow {
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  color: rgba(244, 238, 225, 0.7);
+  margin: 0 0 8px;
+}
+
+.hero-title {
+  font-family: "Fraunces", serif;
+  font-weight: 500;
+  font-optical-sizing: auto;
+  font-size: 56px;
+  line-height: 1;
+  color: var(--cream);
+  margin: 0 0 16px;
+}
+
+.hero-sub {
+  font-size: 15px;
+  color: rgba(244, 238, 225, 0.82);
+  line-height: 1.6;
+  margin: 0 auto;
+  max-width: 340px;
+}
+
+.subject-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.subject-card {
+  background: rgba(244, 238, 225, 0.07);
+  border: 1px solid rgba(244, 238, 225, 0.18);
+  border-radius: 10px;
+  padding: 18px 20px;
+  text-align: left;
+  color: var(--cream);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  backdrop-filter: blur(2px);
+}
+
+.subject-card:not(.locked):hover {
+  background: rgba(244, 238, 225, 0.13);
+  border-color: rgba(217, 164, 65, 0.6);
+}
+
+.subject-card.locked {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.subject-name {
+  font-family: "Fraunces", serif;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.subject-tagline {
+  font-size: 13px;
+  color: rgba(244, 238, 225, 0.65);
+  margin-top: 2px;
+}
+
+.subject-status {
+  font-size: 12px;
+  color: var(--dusk-gold);
+  margin-top: 10px;
+  font-weight: 600;
+}
+
+.subject-card.locked .subject-status {
+  color: rgba(244, 238, 225, 0.55);
+}
+
+/* ---------------- APP INTERIOR (materia/unidad/problema) ---------------- */
 
 .app-shell {
   max-width: 480px;
